@@ -3,6 +3,7 @@
 JETDIR=/home/e734/e734/shared/JetSimsMFAL
 model=$3 # can be HF or LF!                                                                   
 
+
 mkdir -p ../runs_${model}
 cd ../runs_${model}
 
@@ -11,9 +12,14 @@ for rID in $(seq -f "%03g" $1 $2); do
     cp -r ../template_run run${rID}
     cd run${rID}
 
-    # Modifies the correct run input values.                                                  
-    sh $JETDIR/scripts/modify_inputs.sh ${rID}
+    # julia -e "include("./range_setup.jl")
+    # doModify flag - if doModify is true then only things are rewritten
 
+    # if doModify
+    # Modifies the correct run input values.                                                  
+    sh $JETDIR/scripts/modify_inputs.sh ${rID} ${RUNDIR} # check what args need to be given
+    # else do nothing
+    
     cd ../
 done
 
