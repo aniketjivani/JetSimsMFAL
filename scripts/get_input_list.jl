@@ -36,9 +36,7 @@ rhoInf = 0.0722618 # kg / m^3
 
 
 RUN_FOLDER = ENV["RUN_FOLDER"]
-NRUNS = ENV["NRUNS"]
-
-p0∗ = 10218.4466 # nominal value around which we varied stagnation pressure in old runs.
+NRUNS = parse(Int, ENV["NRUNS"])
 
 # set lower and upper bounds for uncertain parameters (the last value in each is for MEVR and NOT nu_tilde, that is backed out of samples for MEVR at the end!!)
 lower_bounds = [293.24, 0.1, 4.6228]
@@ -53,18 +51,20 @@ input_list[:, 3] = rand(Uniform(-1, 1), NRUNS)
 input_list[:, 4] = rand(Uniform(-1, 1), NRUNS)
 
 # scale back to original quantities using lower and upper bounds
-input_list[:, 5] = (1/2) * (upper_bounds[1] - lower_bounds[1]) * input_list[:, 2] + (1/2) * (lower_bounds[1] + upper_bounds[1])
-input_list[:, 6] = (1/2) * (upper_bounds[2] - lower_bounds[2]) * input_list[:, 3] + (1/2) * (upper_bounds[2] + lower_bounds[2])
-logMEVR = (1/2) * (log(upper_bounds[3]) -log(lower_bounds[3])) * input_list[:, 4] + (1/2) * (log(lower_bounds[3]) + log(upper_bounds[3]))
+input_list[:, 5] = (1/2) * (upper_bounds[1] - lower_bounds[1]) * input_list[:, 2] .+ (1/2) * (lower_bounds[1] + upper_bounds[1])
+input_list[:, 6] = (1/2) * (upper_bounds[2] - lower_bounds[2]) * input_list[:, 3] .+ (1/2) * (upper_bounds[2] + lower_bounds[2])
+logMEVR = (1/2) * (log(upper_bounds[3]) -log(lower_bounds[3])) * input_list[:, 4] .+ (1/2) * (log(lower_bounds[3]) + log(upper_bounds[3]))
 input_list[:, 7] = exp.(logMEVR) * (mu_l / rhoInf) # change logMEVR to nu_tilde
 
 # write to file
 if !isfile(joinpath(RUN_FOLDER, "input_list.txt"))
     open(joinpath(RUN_FOLDER, "input_list.txt"), "w") do io
-        writedlm(input_list)
+        writedlm(io, input_list)
     end
 else
-    open(joinpath(RUN_FOLDER, "input_list_" * Dates.format(Dates.now(), "yyyy_mm_dd") * ".txt"))# write new file with timestamp appended, and the run folder inlet.dats won't be overwritten UNLESS manually specified to do so. This is to make sure we don't use old results by mistake when we change the inputs for some reason.
+    # open(joinpath(RUN_FOLDER, "input_list_" * Dates.format(Dates.now(), "yyyy_mm_dd") * ".txt"), "w") do io
+    #     writedlm(io, input_list)
+    # end# write new file with timestamp appended, and the run folder inlet.dats won't be overwritten UNLESS manually specified to do so. This is to make sure we don't use old results by mistake when we change the inputs for some reason.
 end
 
 
