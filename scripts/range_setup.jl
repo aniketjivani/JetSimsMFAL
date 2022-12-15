@@ -11,7 +11,8 @@ using Dates
 # shell script makes run folders based on arguments for number of runs, model etc 
 # Generate input list and accordingly write an inlet.dat file as well for all runs. The master list resides in top level of relevant run folder
 
-
+mu_l = 1.84592e-5 # N .s / m^2
+rhoInf = 0.0722618 # kg / m^3
 
 # SHELL script
 # JETDIR=/home/e734/e734/shared/JetSimsMFAL
@@ -54,8 +55,8 @@ input_list[:, 4] = rand(Uniform(-1, 1), NRUNS)
 # scale back to original quantities using lower and upper bounds
 input_list[:, 5] = (1/2) * (upper_bounds[1] - lower_bounds[1]) * input_list[:, 2] + (1/2) * (lower_bounds[1] + upper_bounds[1])
 input_list[:, 6] = (1/2) * (upper_bounds[2] - lower_bounds[2]) * input_list[:, 3] + (1/2) * (upper_bounds[2] + lower_bounds[2])
-input_list[:, 7] = (1/2) * (log(upper_bounds[3]) -log(lower_bounds[3])) * input_list[:, 4] + (1/2) * (log(lower_bounds[3]) + log(upper_bounds[3]))
-
+logMEVR = (1/2) * (log(upper_bounds[3]) -log(lower_bounds[3])) * input_list[:, 4] + (1/2) * (log(lower_bounds[3]) + log(upper_bounds[3]))
+input_list[:, 7] = exp.(logMEVR) * (mu_l / rhoInf) # change logMEVR to nu_tilde
 
 # write to file
 if !isfile(joinpath(RUN_FOLDER, "input_list.txt"))
