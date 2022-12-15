@@ -45,17 +45,16 @@ upper_bounds = [312.94, 0.3, 100.036]
 
 input_list = zeros(NRUNS, 7) # first column is just run ID, next 3 columns are uniform random betn -1 and +1, last 3 are scaled samples in actual units!
 
-for i = 1:NRUNS
-    input_list[:, 1] = rand(Uniform(-1, 1), NRUNS)
-    input_list[:, 2] = rand(Uniform(-1, 1), NRUNS)
-    input_list[:, 3] = rand(Uniform(-1, 1), NRUNS)
+input_list[:, 1] = collect(1:NRUNS)
 
-    # scale back to original quantities using lower and upper bounds
-    input_list[:, 4] = blah
-    input_list[:, 5] = blah
-    input_list[:, 6] = blah
-end
+input_list[:, 2] = rand(Uniform(-1, 1), NRUNS)
+input_list[:, 3] = rand(Uniform(-1, 1), NRUNS)
+input_list[:, 4] = rand(Uniform(-1, 1), NRUNS)
 
+# scale back to original quantities using lower and upper bounds
+input_list[:, 5] = (1/2) * (upper_bounds[1] - lower_bounds[1]) * input_list[:, 2] + (1/2) * (lower_bounds[1] + upper_bounds[1])
+input_list[:, 6] = (1/2) * (upper_bounds[2] - lower_bounds[2]) * input_list[:, 3] + (1/2) * (upper_bounds[2] + lower_bounds[2])
+input_list[:, 7] = (1/2) * (log(upper_bounds[3]) -log(lower_bounds[3])) * input_list[:, 4] + (1/2) * (log(lower_bounds[3]) + log(upper_bounds[3]))
 
 
 # write to file
