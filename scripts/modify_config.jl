@@ -16,7 +16,7 @@ INPUT_FILE=joinpath(RUN_FOLDER, "input_list.txt")
 # load old inlet file data
 INLET_FILE_OLD=joinpath(RUN_FOLDER, "run"*@sprintf("%03d", RUN_ID), "inlet.dat")
 
-input_data = readdlm(INPUT_FILE)[:, 5:7] # read scaled up values of uncertain Ue, kappa and nu_tilde
+input_data = readdlm(INPUT_FILE, header=false)[:, 5:7] # read scaled up values of uncertain Ue, kappa and nu_tilde
 
 inlet_file_old = readdlm(INLET_FILE_OLD, skipstart=4, header=false)
 inlet_data_new = zeros(size(inlet_file_old, 1), size(inlet_file_old, 2))
@@ -50,7 +50,15 @@ write(tmpio, "MARKER_TAG= inlet\n")
 write(tmpio, "NROW=1441\n")
 write(tmpio, "NCOL=9\n")
 
-write(tmpio, inlet_data_new)
+flush(tmpio)
 
 mv(tmppath, INLET_FILE_OLD, force=true)
+
+open(INLET_FILE_OLD, "a") do io
+    writedlm(io, inlet_data_new)
+end
+
+# write(tmpio, inlet_data_new)
+
+
                             
