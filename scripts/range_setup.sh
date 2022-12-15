@@ -13,7 +13,7 @@ cd ../runs_${model}
 for rID in $(seq -f "%03g" $1 $2); do
     # Copies run template folder.
     mkdir run${rID}
-    cp ../template_run/inlet_current.dat run${rID}/inlet.dat
+    cp ../template_run/inlet.dat run${rID}/inlet.dat
     if [ "$model" == "LF" ]
     then
        cp ../template_run/LoFi_RoundJetG4H.cfg run${rID}/RoundJet_G4H.cfg
@@ -21,10 +21,11 @@ for rID in $(seq -f "%03g" $1 $2); do
 	cp ../template_run/HiFi_RoundJetG4H.cfg run${rID}/RoundJet_G4H.cfg
     fi
 
-    julia -e "include("./range_setup.jl")"
+    julia -e "include("./get_input_list.jl")"
     
     cd run${rID}
 
+    export RUN_ID=${rID}
     julia -e "include("./modify_config.jl")"
     
     # julia -e "include("./range_setup.jl")
