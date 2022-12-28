@@ -12,7 +12,9 @@ help:
 	@echo "If computation results are not stored in this folder, point to where they are stored and create a symbolic link for the same"
 
 ##############################################################################################
-
+get_julia_mode_emacs:
+	chmod +x scripts/getElpa.sh
+	./scripts/getElpa.sh
 
 generate_input_list:
 	
