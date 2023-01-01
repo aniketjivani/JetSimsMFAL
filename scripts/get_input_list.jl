@@ -38,6 +38,9 @@ rhoInf = 0.0722618 # kg / m^3
 RUN_FOLDER = ENV["RUN_FOLDER"]
 NRUNS = parse(Int, ENV["NRUNS"])
 
+RUN_BATCH = ENV["RUN_BATCH"]
+
+
 # set lower and upper bounds for uncertain parameters (the last value in each is for log MEVR and NOT nu_tilde, that is backed out of samples for log MEVR at the end!!)
 lower_bounds = [293.24, 0.1, 1.531]
 upper_bounds = [312.94, 0.3, 4.6055]
@@ -56,6 +59,18 @@ input_list[:, 6] = (1/2) * (upper_bounds[2] - lower_bounds[2]) * input_list[:, 3
 logMEVR = (1/2) * (upper_bounds[3] -lower_bounds[3]) * input_list[:, 4] .+ (1/2) * (lower_bounds[3] + upper_bounds[3])
 input_list[:, 7] = exp.(logMEVR) * (mu_l / rhoInf) # change logMEVR to nu_tilde
 
+if RUN_BATCH=="test"
+    input_list = zeros(1, 7)
+    input_list[:, 5] .= lower_bounds[1]
+    input_list[:, 6] .= lower_bounds[2]
+    input_list[:, 7] .= exp.(lower_bounds[3]) * (mu_l / rhoInf)
+
+    input_list[:, 1] .= 1
+    input_list[:, 2] .= -1
+    input_list[:, 3] .= -1
+    input_list[:, 4] .= -1
+end
+    
 # write to file
 if !isfile(joinpath(RUN_FOLDER, "input_list.txt"))
     open(joinpath(RUN_FOLDER, "input_list.txt"), "w") do io
