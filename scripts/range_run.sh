@@ -1,14 +1,20 @@
 #!/bin/bash                                                                                   
 
-cd runs
+model=$3
+batch=$4
+
+export RUN_FOLDER=`readlink -f ../runs_${model}_batch_${4}`
+
+cd $RUN_FOLDER
 
 for rID in $(seq $1 $2); do
     start=$(date +%s.%N)
-    cd wdir.${rID}
+    cd run${rID}
 
-    # Runs SU2.                                                                               
-    mpirun -n 4 SU2_CFD RoundJet_G4H.cfg > screen.out
-    #SU2_CFD input.cfg > screen.out                                                           
+    cp ../../template_run/run_job.sbat ./run_job.sbat
+
+    sbatch run_job.sbat
+    
     cd ../
     duration=$(echo "$(date +%s.%N) - $start" |bc)
     execution_time=`printf "%.5f seconds " $duration`
