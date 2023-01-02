@@ -4,3 +4,6 @@ scratch
 *#
 #*
 Manifest.toml
+*.csv
+*.vtu
+*.dat
