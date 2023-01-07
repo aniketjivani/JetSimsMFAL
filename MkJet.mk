@@ -1,6 +1,8 @@
 SHELL=/bin/bash
 MODEL=LF
+BATCH=256
 
+JETDIR=/work/e734/e734/shared/ajivani/JetSimsMFAL
 
 help:
 	@echo "**************************************************************************"
@@ -16,9 +18,9 @@ get_julia_mode_emacs:
 	chmod +x scripts/getElpa.sh
 	./scripts/getElpa.sh
 
-generate_input_list:
+get_list:
 	
-modify_config_files:
+modify_inlet:
 	
 
 run_su2_jobs:
