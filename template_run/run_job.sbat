@@ -12,7 +12,8 @@
 #SBATCH --account=e734
 #SBATCH --partition=standard
 #SBATCH --qos=standard
-
+#SBATCH --mail-user=ajivani@umich.edu
+#SBATCH --mail-type=END
 
 
 ## Setup the batch environment
