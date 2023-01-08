@@ -13,9 +13,11 @@ p0(ma) = pInf * (1 + ((γ - 1)/2) * ma^2)^(γ/(γ - 1))
 
 function uer(yData, zData, UeC, kappa)
     rData = sqrt.(yData.^2 + zData .^2)
+    DDBy2 = maximum(rData)
     UeData = []
     for r in rData
-        push!(UeData, UeC * tanh(((1/2) - r)/(kappa)))
+        # push!(UeData, UeC * tanh(((1/2) - r)/(kappa)))
+        push!(UeData, UeC * tanh((DDBy2 - r)/(kappa * 2 * DDBy2)))
     end
     return UeData
 end

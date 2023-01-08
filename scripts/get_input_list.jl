@@ -60,15 +60,15 @@ logMEVR = (1/2) * (upper_bounds[3] -lower_bounds[3]) * input_list[:, 4] .+ (1/2)
 input_list[:, 7] = exp.(logMEVR) * (mu_l / rhoInf) # change logMEVR to nu_tilde
 
 if RUN_BATCH=="test"
-    input_list = zeros(1, 7)
-    input_list[:, 5] .= lower_bounds[1]
-    input_list[:, 6] .= lower_bounds[2]
-    input_list[:, 7] .= exp.(lower_bounds[3]) * (mu_l / rhoInf)
+    input_extrema_combinations = hcat(collect.(Iterators.product([lower_bounds[1], upper_bounds[1]], [lower_bounds[2], upper_bounds[2]], [exp(lower_bounds[3]) * (mu_l / rhoInf), exp(upper_bounds[3]) * (mu_l / rhoInf)]))[:]...)'
+    nruns_input_list = size(input_extrema_combinations, 1) 
+    input_list = zeros(nruns_input_list, 7)
 
-    input_list[:, 1] .= 1
-    input_list[:, 2] .= -1
-    input_list[:, 3] .= -1
-    input_list[:, 4] .= -1
+    input_list[:, 5:7] = deepcopy(input_extrema_combinations)
+
+    input_list[:, 1] = collect(1:nruns_input_list) 
+
+    input_list[:, 2:4] = hcat(collect.(Iterators.product([-1, 1], [-1, 1], [-1, 1]))[:]...)'    
 end
     
 # write to file

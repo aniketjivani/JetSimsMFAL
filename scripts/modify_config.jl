@@ -7,7 +7,7 @@ using DelimitedFiles
 # modify inlet.dat for use in config
 # get variable exported from bash
 RUN_FOLDER=ENV["RUN_FOLDER"]
-NRUNS=parse(Int, ENV["NRUNS"])
+# NRUNS=parse(Int, ENV["NRUNS"])
 RUN_ID=parse(Int, ENV["RUN_ID"])
 
 RUN_BATCH=ENV["RUN_BATCH"]
@@ -22,15 +22,15 @@ INLET_FILE_OLD=joinpath(RUN_FOLDER, "run"*@sprintf("%03d", RUN_ID), "example_inl
 input_data = readdlm(INPUT_FILE, header=false)[:, 5:7]
 
 
-if RUN_BATCH == "test"
-    UCenterline = input_data[1, 1]
-    kappa = input_data[1, 2]
-    nu_tilde = input_data[1, 3]
-else
+# if RUN_BATCH == "test"
+#     UCenterline = input_data[1, 1]
+#     kappa = input_data[1, 2]
+#     nu_tilde = input_data[1, 3]
+# else
     UCenterline = input_data[RUN_ID, 1] # RUN ID is redundant if we are running a test case - always 1 run
     kappa = input_data[RUN_ID, 2]
     nu_tilde = input_data[RUN_ID, 3]
-end
+# end
 
 # read y and z coordinates from inlet file
 inlet_data = readdlm(INLET_FILE_OLD, skipstart=5, header=false)
