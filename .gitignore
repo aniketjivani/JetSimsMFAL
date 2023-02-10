@@ -5,5 +5,7 @@ scratch
 #*
 Manifest.toml
 *.csv
-*.vtu
 *.dat
+slurm*.out
+surface_flow.vtu
+flow.vtu
