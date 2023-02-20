@@ -23,7 +23,7 @@ then
 	cp ../../template_run/example_inlet.dat ./example_inlet.dat
 	if [ "$model" == "LF" ]
 	then
-	    cp ../../template_run/LoFi_RoundJetG4H_modified_options.cfg ./RoundJet_G4H.cfg
+	    cp ../../template_run/LoFi_RoundJetG4H.cfg ./RoundJet_G4H.cfg
 	else
 	    cp ../../template_run/HiFi_RoundJetG4H.cfg ./RoundJet_G4H.cfg
 	fi
@@ -46,7 +46,7 @@ else
 	cp ../../template_run/example_inlet.dat ./example_inlet.dat
 	if [ "$model" == "LF" ]
 	then
-	    cp ../../template_run/LoFi_RoundJetG4H_modified_options.cfg ./RoundJet_G4H.cfg
+	    cp ../../template_run/LoFi_RoundJetG4H.cfg ./RoundJet_G4H.cfg
 	else
 	    cp ../../template_run/HiFi_RoundJetG4H.cfg ./RoundJet_G4H.cfg
 	fi
@@ -60,5 +60,3 @@ else
 	cd ../
     done
 fi
-
-
