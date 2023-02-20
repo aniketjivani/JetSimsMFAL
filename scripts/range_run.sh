@@ -11,8 +11,13 @@ for rID in $(seq -f "%03g" $1 $2); do
     start=$(date +%s.%N)
     cd run${rID}
     pwd
-    cp ../../template_run/run_job.sbat ./
-
+    if [ "$model" == "LF" ]
+    then
+	cp ../../template_run/run_job_LF.sbat ./run_job.sbat
+    else
+	cp ../../template_run/run_job.sbat ./
+    fi
+    
     sbatch run_job.sbat
     
     cd ../
