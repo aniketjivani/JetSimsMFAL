@@ -3,6 +3,7 @@ using Random
 using Distributions
 using ArgParse
 using Dates
+using LatinHypercubeSampling
 
 # Uncertain inputs:
 # 1. Nozzle centerline velocity Ue (velocity profile is top-hat, decays to zero towards wall) - ok with using 293.24 to 312.94 m/s (calculated from rough_calc.jl)
@@ -49,9 +50,13 @@ input_list = zeros(NRUNS, 7) # first column is just run ID, next 3 columns are u
 
 input_list[:, 1] = collect(1:NRUNS)
 
-input_list[:, 2] = rand(Uniform(-1, 1), NRUNS)
-input_list[:, 3] = rand(Uniform(-1, 1), NRUNS)
-input_list[:, 4] = rand(Uniform(-1, 1), NRUNS)
+LFPlan, _ = LHCOptim(NRUNS, 3, 1000)
+input_list[:, 2:4] = scaleLHC(plan, [(-1, 1), (-1, 1)])
+
+# input_list[:, 2:4] = rand(Uniform(-1, 1), NRUNS, 3)
+# input_list[:, 2] = rand(Uniform(-1, 1), NRUNS)
+# input_list[:, 3] = rand(Uniform(-1, 1), NRUNS)
+# input_list[:, 4] = rand(Uniform(-1, 1), NRUNS)
 
 # scale back to original quantities using lower and upper bounds
 input_list[:, 5] = (1/2) * (upper_bounds[1] - lower_bounds[1]) * input_list[:, 2] .+ (1/2) * (lower_bounds[1] + upper_bounds[1])
