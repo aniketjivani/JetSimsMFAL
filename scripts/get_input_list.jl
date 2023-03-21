@@ -50,8 +50,8 @@ input_list = zeros(NRUNS, 7) # first column is just run ID, next 3 columns are u
 
 input_list[:, 1] = collect(1:NRUNS)
 
-LFPlan, _ = LHCOptim(NRUNS, 3, 1000)
-input_list[:, 2:4] = scaleLHC(plan, [(-1, 1), (-1, 1)])
+LFPlan, _ = LHCoptim(NRUNS, 3, 1000)
+input_list[:, 2:4] = scaleLHC(LFPlan, [(-1, 1), (-1, 1), (-1, 1)])
 
 # input_list[:, 2:4] = rand(Uniform(-1, 1), NRUNS, 3)
 # input_list[:, 2] = rand(Uniform(-1, 1), NRUNS)
