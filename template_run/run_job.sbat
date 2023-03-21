@@ -25,4 +25,4 @@ module load epcc-job-env
 
 ## srun launches the parallel program based on the SBATCH options
 
-srun --distribution=block:block --hint=nomultithread /work/e734/e734/ajivani/SU2_BUILD/bin/SU2_CFD RoundJet_G4H.cfg
+srun --distribution=block:block --hint=nomultithread /work/e734/e734/ajivani/SU2_BUILD/bin/SU2_CFD Transient_RoundJet_G4H.cfg
