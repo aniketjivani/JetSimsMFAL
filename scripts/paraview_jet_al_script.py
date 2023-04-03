@@ -9,8 +9,11 @@ from paraview.simple import *
 
 
 import os
-runDir = "/work/e734/e734/shared/ajivani/JetSimsMFAL/runs_LF_batch_test"
-exportDir = "/home/e734/e734/ajivani/jet_LF_batch_test"
+# runDir = "/work/e734/e734/shared/ajivani/JetSimsMFAL/runs_LF_batch_test"
+# exportDir = "/home/e734/e734/ajivani/jet_LF_batch_test_modified_lipline"
+
+runDir = "/work/e734/e734/shared/ajivani/JetSimsMFAL/runs_LF_batch_01"
+exportDir = "/work/e734/e734/shared/ajivani/JetSimsMFAL/results_LF_batch_01"
 
 try:
     os.mkdir(exportDir)
@@ -18,10 +21,10 @@ except FileExistsError:
     pass
 
 runID1 = 1
-runID2 = 8
+runID2 = 10
 
 for runID in range(runID1, runID2 + 1):
-    runIDPath = os.path.join(exportDir, "run" + str(runID))
+    runIDPath = os.path.join(exportDir, "run" + "{:03d}".format(runID))
     try:
         os.mkdir(runIDPath)
     except FileExistsError:
@@ -29,7 +32,9 @@ for runID in range(runID1, runID2 + 1):
 
 
 for runID in range(runID1, runID2 + 1):
+    
     flowFileName = os.path.join(runDir, "run" + "%03d" % runID, "flow.vtu")
+    print("Reading {}".format(flowFileName)
     #### disable automatic camera reset on 'Show'
     paraview.simple._DisableFirstRenderCameraReset()
     # create a new 'XML Unstructured Grid Reader'
@@ -327,8 +332,8 @@ for runID in range(runID1, runID2 + 1):
     plotOverLine1.Point2 = [70.0, 30.899999618530273, 30.899999618530273]
 
     # Properties modified on plotOverLine1
-    plotOverLine1.Point1 = [0.0, 0.0, 0.5]
-    plotOverLine1.Point2 = [20.0, 0.0, 0.5]
+    plotOverLine1.Point1 = [0.0, 0.0, 0.503]
+    plotOverLine1.Point2 = [20.0, 0.0, 0.503]
     plotOverLine1.Resolution = 199
 
     # show data in view
@@ -516,8 +521,8 @@ for runID in range(runID1, runID2 + 1):
     plotOverLine2.Point2 = [70.0, 30.899999618530273, 30.899999618530273]
 
     # Properties modified on plotOverLine2
-    plotOverLine2.Point1 = [0.0, 0.0, 0.5]
-    plotOverLine2.Point2 = [20.0, 0.0, 0.5]
+    plotOverLine2.Point1 = [0.0, 0.0, 0.503]
+    plotOverLine2.Point2 = [20.0, 0.0, 0.503]
     plotOverLine2.Resolution = 199
 
     # show data in view
@@ -614,8 +619,8 @@ for runID in range(runID1, runID2 + 1):
     plotOverLine3.Point2 = [70.0, 30.899999618530273, 30.899999618530273]
 
     # Properties modified on plotOverLine3
-    plotOverLine3.Point1 = [0.0, 0.0, 0.5]
-    plotOverLine3.Point2 = [20.0, 0.0, 0.5]
+    plotOverLine3.Point1 = [0.0, 0.0, 0.503]
+    plotOverLine3.Point2 = [20.0, 0.0, 0.503]
     plotOverLine3.Resolution = 199
 
     # show data in view
@@ -855,6 +860,9 @@ for runID in range(runID1, runID2 + 1):
     renderView1.CameraFocalPoint = [31.99999999999999, 2.7916503803603815e-16, 1.2795064243318417e-16]
     renderView1.CameraViewUp = [0.07792917036407858, 0.35895882999215595, -0.9300944053035847]
     renderView1.CameraParallelScale = 57.91044770031002
+
+    print("Processed {}".format(flowFileName)
+
 
 print("Finished post-processing of flow solutions")
 print("To see result files, go to: ", exportDir)
