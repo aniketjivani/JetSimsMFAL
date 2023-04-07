@@ -21,7 +21,7 @@ except FileExistsError:
     pass
 
 runID1 = 1
-runID2 = 10
+runID2 = 200
 
 for runID in range(runID1, runID2 + 1):
     runIDPath = os.path.join(exportDir, "run" + "{:03d}".format(runID))
@@ -34,7 +34,7 @@ for runID in range(runID1, runID2 + 1):
 for runID in range(runID1, runID2 + 1):
     
     flowFileName = os.path.join(runDir, "run" + "%03d" % runID, "flow.vtu")
-    print("Reading {}".format(flowFileName)
+    print("Reading {}".format(flowFileName))
     #### disable automatic camera reset on 'Show'
     paraview.simple._DisableFirstRenderCameraReset()
     # create a new 'XML Unstructured Grid Reader'
@@ -658,9 +658,9 @@ for runID in range(runID1, runID2 + 1):
     # Properties modified on plotOverLine3Display
     plotOverLine3Display.SeriesVisibility = ['Velocity_X']
 
-    export_file_velocity = os.path.join(exportDir, "run" + str(runID), "mean_vel.csv")
-    export_file_uu = os.path.join(exportDir, "run" + str(runID), "reynolds_stress_uu.csv")
-    export_file_uw = os.path.join(exportDir, "run" + str(runID), "reynolds_stress_uw.csv")
+    export_file_velocity = os.path.join(exportDir, "run" + "{:03d}".format(runID), "mean_vel.csv")
+    export_file_uu = os.path.join(exportDir, "run" + "{:03d}".format(runID), "reynolds_stress_uu.csv")
+    export_file_uw = os.path.join(exportDir, "run" + "{:03d}".format(runID), "reynolds_stress_uw.csv")
     
     # save data
     SaveData(export_file_velocity, proxy=plotOverLine3, ChooseArraysToWrite=1,
@@ -861,11 +861,11 @@ for runID in range(runID1, runID2 + 1):
     renderView1.CameraViewUp = [0.07792917036407858, 0.35895882999215595, -0.9300944053035847]
     renderView1.CameraParallelScale = 57.91044770031002
 
-    print("Processed {}".format(flowFileName)
+    print("Processed {}".format(flowFileName))
 
 
 print("Finished post-processing of flow solutions")
-print("To see result files, go to: ", exportDir)
+print("To see result files, go to: {}".format(exportDir))
 
 #--------------------------------------------
 # uncomment the following to render all views
