@@ -20,7 +20,7 @@
 
 ## Load the xthi module to get access to the xthi program
 # module load xthi
-module load paraview
+module load paraview/5.10.1
 
 ## srun launches the parallel program based on the SBATCH options
 
