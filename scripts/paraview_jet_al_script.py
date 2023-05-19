@@ -36,7 +36,7 @@ for runID in range(runID1, runID2 + 1):
     flowFileName = os.path.join(runDir, "run" + "%03d" % runID, "flow.vtu")
     print("Reading {}".format(flowFileName))
     #### disable automatic camera reset on 'Show'
-    paraview.simple._DisableFirstRenderCameraReset()
+    # paraview.simple._DisableFirstRenderCameraReset()
     # create a new 'XML Unstructured Grid Reader'
     flowvtu = XMLUnstructuredGridReader(registrationName='flow.vtu', FileName=[flowFileName])
     flowvtu.PointArrayStatus = ['Density', 'Momentum', 'Energy', 'Nu_Tilde', 'Pressure', 'Temperature', 'Mach', 'Pressure_Coefficient', 'Laminar_Viscosity', 'Skin_Friction_Coefficient', 'Heat_Flux', 'Y_Plus', 'Eddy_Viscosity', 'Vorticity', 'Q_Criterion']
@@ -80,7 +80,7 @@ for runID in range(runID1, runID2 + 1):
     flowvtuDisplay.OpacityTransferFunction.Points = [0.07034882158041, 0.0, 0.5, 0.0, 0.07241223007440567, 1.0, 0.5, 0.0]
 
     # reset view to fit data
-    renderView1.ResetCamera(False)
+    #    renderView1.ResetCamera(False)
 
     # get the material library
     materialLibrary1 = GetMaterialLibrary()

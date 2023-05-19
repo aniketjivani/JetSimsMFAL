@@ -47,6 +47,19 @@ RUN_FOLDER_LF="../runs_LF_batch_" * @sprintf("%02d", parse(Int, RUN_BATCH))
 LF_RUNS_SCALED = readdlm(joinpath(RUN_FOLDER_LF, "input_list.txt"))[:, 2:4]
 
 
+s = ArgParseSettings()
+@add_arg_table! s begin
+    "--fileLF"
+        help = "Path to load LF runs from."
+        arg_type = String
+    default = "none"
+
+end
+
+args = parse_args(s)
+
+fileLF = args["fileLF"]
+
 
 # set lower and upper bounds for uncertain parameters (the last value in each is for log MEVR and NOT nu_tilde, that is backed out of samples for log MEVR at the end!!)
 lower_bounds = [293.24, 0.1, 1.531]
@@ -72,9 +85,13 @@ end
 
 #print(LF_RUNS_IDX)
 
-HFPlan, _ = subLHCoptim(LF_RUNS_IDX, NRUNS, 1000)
-HFIdx = sort(subLHCindex(LF_RUNS_IDX, HFPlan))
-print(HFIdx)
+if fileLF == "none"
+    HFPlan, _ = subLHCoptim(LF_RUNS_IDX, NRUNS, 1000)
+    HFIdx = sort(subLHCindex(LF_RUNS_IDX, HFPlan))
+    print(HFIdx)
+else
+    HFIdx = readdlm(fileLF, Int, header=false)
+end
 
 for (runID, HFID) in enumerate(HFIdx)
     mkdir(joinpath(RUN_FOLDER, @sprintf("run%03d", runID)))
@@ -92,17 +109,6 @@ input_list[:, 6] = (1/2) * (upper_bounds[2] - lower_bounds[2]) * input_list[:, 3
 logMEVR = (1/2) * (upper_bounds[3] -lower_bounds[3]) * input_list[:, 4] .+ (1/2) * (lower_bounds[3] + upper_bounds[3])
 input_list[:, 7] = exp.(logMEVR) * (mu_l / rhoInf) # change logMEVR to nu_tilde
 
-# if RUN_BATCH=="test"
-#     input_extrema_combinations = hcat(collect.(Iterators.product([lower_bounds[1], upper_bounds[1]], [lower_bounds[2], upper_bounds[2]], [exp(lower_bounds[3]) * (mu_l / rhoInf), exp(upper_bounds[3]) * (mu_l / rhoInf)]))[:]...)'
-#     nruns_input_list = size(input_extrema_combinations, 1) 
-#     input_list = zeros(nruns_input_list, 7)
-
-#     input_list[:, 5:7] = deepcopy(input_extrema_combinations)
-
-#     input_list[:, 1] = collect(1:nruns_input_list) 
-
-#     input_list[:, 2:4] = hcat(collect.(Iterators.product([-1, 1], [-1, 1], [-1, 1]))[:]...)'    
-# end
     
 # write to file
 if !isfile(joinpath(RUN_FOLDER, "input_list.txt"))
@@ -119,8 +125,4 @@ open(joinpath(RUN_FOLDER, "LF_ID.txt"), "w") do io
     writedlm(io, HFIdx)
 end
 
-# pass correct variables back to the shell for further processing
-
-
-
-# check values for p0 based on p0∗ and ensure they are in roughly the right range.
+# copy the restart flow in each LF file to the correct HF folders.

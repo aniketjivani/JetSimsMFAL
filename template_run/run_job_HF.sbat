@@ -1,0 +1,35 @@
+#!/bin/bash --login
+
+#SBATCH --job-name=JetSim
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=128
+#SBATCH --cpus-per-task=1
+#SBATCH --time=12:00:00
+
+
+
+## Replace [budget code] below with your project code (e.g. t01)
+#SBATCH --account=e734
+#SBATCH --partition=standard
+#SBATCH --qos=standard
+
+
+## Setup the batch environment
+# module load epcc-job-env
+
+
+
+## Load the xthi module to get access to the xthi program
+# module load xthi
+
+
+## srun launches the parallel program based on the SBATCH options
+
+cp example_inlet_00000.dat example_inlet_50000.dat
+cp example_inlet_00000.dat example_inlet_50001.dat
+
+
+
+srun --distribution=block:block --hint=nomultithread /work/e734/e734/ajivani/SU2_BUILD/bin/SU2_CFD Transient_RoundJet_G4H.cfg
+srun --distribution=block:block --hint=nomultithread /work/e734/e734/ajivani/SU2_BUILD/bin/SU2_CFD Avg_RoundJet_G4H.cfg
+wait
